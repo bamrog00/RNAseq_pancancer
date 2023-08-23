@@ -8,12 +8,14 @@ no = c('TARGET-ALL-P2', 'TARGET-AML','TCGA-CESC', 'TCGA-CHOL', 'TCGA-COAD', 'TCG
 
 
 getSubfolders = function(folder_path) {
+  ## Gets the folder names
   subfolders = list.dirs(folder_path, recursive = FALSE)
   subfolder_names <- basename(subfolders)
   return(subfolder_names)
 }
 
 stackData = function(methode, folders){
+  ## Get the data and stacks all cancer types togehter
   data = data.frame()
   
   for (folder in folders){
@@ -33,13 +35,18 @@ stackData = function(methode, folders){
   return (data)
 }
 
-methode = 'GMM'
+
 
 folders = getSubfolders(paste('../', version, sep = ''))
 
 folders = folders[grepl("^RNAseq_", folders)]
 folders = folders[folders != 'RNAseq_CCSK']
 
+
+
+### GMM
+
+methode = 'GMM'
 
 data_gmm = stackData(methode, folders)
 
@@ -113,6 +120,7 @@ ggsave('../data/figures/hrr_gmm_bp.png',HRR_bp_gmm,width = 8.63, height = 5.71)
 
 
 
+###### Kmeans
 
 data_kmean = stackData('Kmeans', folders)
 
